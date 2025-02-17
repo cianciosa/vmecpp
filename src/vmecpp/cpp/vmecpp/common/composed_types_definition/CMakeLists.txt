@@ -1,4 +1,6 @@
-list (APPEND vmecpp_sources
-  ${CMAKE_CURRENT_SOURCE_DIR}/composed_types.h
+target_precompile_headers (vmecpp_core
+
+                           PRIVATE
+
+                           $<$<BOOL:${USE_PCH}>:$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/composed_types.h>>
 )
-set (vmecpp_sources "${vmecpp_sources}" PARENT_SCOPE)

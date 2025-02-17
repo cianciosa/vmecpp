@@ -1,5 +1,13 @@
-list (APPEND vmecpp_sources
-  ${CMAKE_CURRENT_SOURCE_DIR}/fourier_forces.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/fourier_forces.h
+target_precompile_headers (vmecpp_core
+
+                           PRIVATE
+
+                           $<$<BOOL:${USE_PCH}>:$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/fourier_forces.h>>
 )
-set (vmecpp_sources "${vmecpp_sources}" PARENT_SCOPE)
+
+target_sources (vmecpp_core
+
+                PRIVATE
+
+                $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/fourier_forces.cc>
+)
