@@ -20,6 +20,33 @@ set_property (CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
 )
 
 #-------------------------------------------------------------------------------
+#  Sanitizer options
+#-------------------------------------------------------------------------------
+add_library (sanitizer INTERFACE)
+
+macro (register_sanitizer_option name)
+    string (TOUPPER ${name} upper_name)
+
+    option (SANITIZE_${upper_name} "Enable the ${name} sanitizer" OFF)
+
+    target_compile_options (sanitizer
+                            INTERFACE
+                            $<$<BOOL:${SANITIZE_${upper_name}}>:-fsanitize=${name}>
+    )
+    target_link_options (sanitizer
+                         INTERFACE
+                         $<$<BOOL:${SANITIZE_${upper_name}}>:-fsanitize=${name}>
+    )
+endmacro ()
+
+register_sanitizer_option (address)
+register_sanitizer_option (leak)
+register_sanitizer_option (memory)
+register_sanitizer_option (thread)
+register_sanitizer_option (undefined)
+register_sanitizer_option (float-divide-by-zero)
+
+#-------------------------------------------------------------------------------
 #  Dependencies.
 #-------------------------------------------------------------------------------
 find_package (HDF5 REQUIRED COMPONENTS C CXX)
@@ -113,6 +140,7 @@ target_link_libraries (vmecpp_core
 
                        absl::strings
                        Eigen3::Eigen
+                       sanitizer
 )
 
 add_executable (vmec_standalone)
