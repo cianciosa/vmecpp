@@ -71,6 +71,7 @@ endif ()
 #  Its unfortunate that we need to set this here globally because of abseil-cpp.
 #  Cmake build targets should be self constained.
 set (CMAKE_CXX_STANDARD 20)
+set (ABSL_PROPAGATE_CXX_STD ON)
 add_subdirectory (abseil-cpp)
 unset (CMAKE_CXX_STANDARD)
 add_subdirectory (indata2json)
